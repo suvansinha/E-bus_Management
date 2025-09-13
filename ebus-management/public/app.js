@@ -1,7 +1,7 @@
-// Firebase initialization (replace with your firebaseConfig.js setup)
-import { auth, db } from 'firebaseConfig.js';
 
-// Authentication
+import { auth, db } from '../firebaseConfig.js';
+
+
 function register() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
@@ -30,7 +30,7 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   });
 });
 
-// Bus Search
+
 function searchBus() {
   const source = document.getElementById('source').value.trim();
   const destination = document.getElementById('destination').value.trim();
