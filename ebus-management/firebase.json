@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "e-bus-management-dac6c-44ab9",
     "public": "public",
     "ignore": [
       "firebase.json",
