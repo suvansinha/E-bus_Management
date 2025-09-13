@@ -1,5 +1,5 @@
 // Firebase initialization (replace with your firebaseConfig.js setup)
-import { auth, db } from '../firebaseConfig.js';
+import { auth, db } from 'firebaseConfig.js';
 
 // Authentication
 function register() {
