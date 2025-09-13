@@ -1,36 +1,60 @@
 
 import { auth, db } from '../firebaseConfig.js';
 
-
+// ----------------------------
+// Register User
+// ----------------------------
 function register() {
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+
   auth.createUserWithEmailAndPassword(email, password)
-    .then(() => alert("Registered successfully"))
-    .catch(error => console.error(error));
+    .then(() => {
+      alert("Registered successfully");
+      document.getElementById('email').value = '';
+      document.getElementById('password').value = '';
+    })
+    .catch(error => {
+      console.error("Registration Error:", error);
+      alert(error.message);
+    });
 }
 
+// ----------------------------
+// Login User
+// ----------------------------
 function login() {
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+
   auth.signInWithEmailAndPassword(email, password)
     .then(() => {
       document.getElementById('auth-section').classList.add('hidden');
       document.getElementById('user-section').classList.remove('hidden');
       document.getElementById('logoutBtn').classList.remove('hidden');
     })
-    .catch(error => console.error(error));
+    .catch(error => {
+      console.error("Login Error:", error);
+      alert(error.message);
+    });
 }
 
+// ----------------------------
+// Logout User
+// ----------------------------
 document.getElementById('logoutBtn').addEventListener('click', () => {
-  auth.signOut().then(() => {
-    document.getElementById('auth-section').classList.remove('hidden');
-    document.getElementById('user-section').classList.add('hidden');
-    document.getElementById('logoutBtn').classList.add('hidden');
-  });
+  auth.signOut()
+    .then(() => {
+      document.getElementById('auth-section').classList.remove('hidden');
+      document.getElementById('user-section').classList.add('hidden');
+      document.getElementById('logoutBtn').classList.add('hidden');
+    })
+    .catch(error => console.error("Logout Error:", error));
 });
 
-
+// ----------------------------
+// Search Bus
+// ----------------------------
 function searchBus() {
   const source = document.getElementById('source').value.trim();
   const destination = document.getElementById('destination').value.trim();
@@ -38,7 +62,9 @@ function searchBus() {
   const resultsDiv = document.getElementById('bus-results');
   resultsDiv.innerHTML = '';
 
-  db.collection('buses').where('source', '==', source).where('destination', '==', destination)
+  db.collection('buses')
+    .where('source', '==', source)
+    .where('destination', '==', destination)
     .get()
     .then(snapshot => {
       if (snapshot.empty) {
@@ -63,6 +89,18 @@ function searchBus() {
     .catch(error => console.error("Error fetching buses:", error));
 }
 
+// ----------------------------
+// Track Bus (Google Maps)
+// ----------------------------
 function trackBus(location) {
   window.open(`https://www.google.com/maps/search/?api=1&query=${location}`, '_blank');
 }
+
+// ----------------------------
+// Make functions available to HTML
+// ----------------------------
+window.register = register;
+window.login = login;
+window.searchBus = searchBus;
+window.trackBus = trackBus;
+
