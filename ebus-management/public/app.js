@@ -1,6 +1,3 @@
-
-import { auth, db } from '../firebaseConfig.js';
-
 // ----------------------------
 // Register User
 // ----------------------------
@@ -8,7 +5,7 @@ function register() {
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value.trim();
 
-  auth.createUserWithEmailAndPassword(email, password)
+  firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(() => {
       alert("Registered successfully");
       document.getElementById('email').value = '';
@@ -27,7 +24,7 @@ function login() {
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value.trim();
 
-  auth.signInWithEmailAndPassword(email, password)
+  firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {
       document.getElementById('auth-section').classList.add('hidden');
       document.getElementById('user-section').classList.remove('hidden');
@@ -43,7 +40,7 @@ function login() {
 // Logout User
 // ----------------------------
 document.getElementById('logoutBtn').addEventListener('click', () => {
-  auth.signOut()
+  firebase.auth().signOut()
     .then(() => {
       document.getElementById('auth-section').classList.remove('hidden');
       document.getElementById('user-section').classList.add('hidden');
@@ -62,7 +59,7 @@ function searchBus() {
   const resultsDiv = document.getElementById('bus-results');
   resultsDiv.innerHTML = '';
 
-  db.collection('buses')
+  firebase.firestore().collection('buses')
     .where('source', '==', source)
     .where('destination', '==', destination)
     .get()
@@ -97,10 +94,9 @@ function trackBus(location) {
 }
 
 // ----------------------------
-// Make functions available to HTML
+// Expose functions to HTML
 // ----------------------------
 window.register = register;
 window.login = login;
 window.searchBus = searchBus;
 window.trackBus = trackBus;
-
